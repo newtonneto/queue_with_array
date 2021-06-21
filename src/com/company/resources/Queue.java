@@ -28,7 +28,11 @@ public class Queue implements IQueue {
 
     @Override
     public Object first() throws EmptyQueueException {
-        return null;
+        if (isEmpty()) {
+            throw new EmptyQueueException("The queue is empty");
+        } else {
+            return arrayQueue[firstElementIndex];
+        }
     }
 
     @Override
@@ -46,14 +50,18 @@ public class Queue implements IQueue {
 
     @Override
     public Object leaveTheQueue() throws EmptyQueueException {
-        //Recebe o primeiro elemento da fila
-        Object element = this.arrayQueue[firstElementIndex];
-        //Apaga o elemento do array
-        this.arrayQueue[firstElementIndex] = null;
-        //Passa o index de inicio para a proxima posição
-        this.firstElementIndex = (this.firstElementIndex + 1) % this.capacity;
+        if (this.isEmpty()) {
+            throw new EmptyQueueException("The queue is empty");
+        } else {
+            //Recebe o primeiro elemento da fila
+            Object element = this.arrayQueue[firstElementIndex];
+            //Apaga o elemento do array
+            this.arrayQueue[firstElementIndex] = null;
+            //Passa o index de inicio para a proxima posição
+            this.firstElementIndex = (this.firstElementIndex + 1) % this.capacity;
 
-        return element;
+            return element;
+        }
     }
 
     public void printQueue() {
@@ -75,7 +83,6 @@ public class Queue implements IQueue {
             newArrayQueue[index] = this.arrayQueue[(this.firstElementIndex + index) % this.capacity];
         }
 
-        System.out.println("\n");
         this.firstElementIndex = 0;
         this.firstEmptyIndex = originalSize;
         this.capacity = this.capacity * 2;
